@@ -2,6 +2,8 @@ package com.javarush.pavlichenko.redis;
 
 import com.javarush.pavlichenko.domain.Continent;
 import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
@@ -10,6 +12,8 @@ import java.util.Set;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Setter
+@Getter
+@NoArgsConstructor
 public class CityCountry {
     Integer id;
 
