@@ -1,29 +1,34 @@
 package com.javarush.pavlichenko.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Type;
 
 import java.math.BigDecimal;
 
 @Entity
 @Table(schema = "world", name = "country_language")
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Getter
 public class CountryLanguage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    Integer id;
 
     @ManyToOne
     @JoinColumn(name = "country_id")
-    private Country country;
+    Country country;
 
-    private String language;
+    String language;
 
     @Column(name = "is_official", columnDefinition = "BIT")
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean isOfficial;
+    Boolean official;
 
-    private BigDecimal percentage;
+    BigDecimal percentage;
 
     @Override
     public String toString() {

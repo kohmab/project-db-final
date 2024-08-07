@@ -3,6 +3,7 @@ package com.javarush.pavlichenko.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "country")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Getter
 public class Country {
 
     @Id
@@ -21,7 +23,7 @@ public class Country {
     String code;
 
     @Column(name = "code_2")
-    String code2;
+    String alternativeCode;
 
     @Column(name = "name")
     String name;
@@ -60,7 +62,7 @@ public class Country {
     @Column(name = "head_of_state")
     String headOfState;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "capital")
     City city;
 

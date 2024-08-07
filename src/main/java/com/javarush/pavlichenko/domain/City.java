@@ -2,11 +2,13 @@ package com.javarush.pavlichenko.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
 @Entity
 @Table(name = "city")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Getter
 public class City {
 
     @Id
