@@ -9,6 +9,8 @@ import com.javarush.pavlichenko.domain.CountryLanguage;
 import com.javarush.pavlichenko.redis.CityCountry;
 import com.javarush.pavlichenko.redis.Language;
 import io.lettuce.core.RedisClient;
+import io.lettuce.core.RedisURI;
+import io.lettuce.core.api.StatefulRedisConnection;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -35,6 +37,7 @@ public class Main {
         List<City> allCities = main.fetchData(main);
         //allCities.forEach(System.out::println);
         List<CityCountry> preparedData = main.transformData(allCities);
+        main.pushToRedis(preparedData);
         main.shutdown();
     }
 
@@ -58,20 +61,6 @@ public class Main {
                 .addAnnotatedClass(CountryLanguage.class)
                 .buildSessionFactory();
         return sessionFactory;
-    }
-
-    private void shutdown() {
-        if (nonNull(sessionFactory)) {
-            sessionFactory.close();
-        }
-        if (nonNull(redisClient)) {
-            redisClient.shutdown();
-        }
-    }
-
-    private RedisClient prepareRedisClient() {
-        // TODO
-        return null;
     }
 
     private List<City> fetchData(Main main) {
@@ -118,6 +107,24 @@ public class Main {
             return res;
         }).collect(Collectors.toList());
     }
+
+    private RedisClient prepareRedisClient() {
+        RedisClient redisClient = RedisClient.create(RedisURI.create("localhost", 6379));
+        try (StatefulRedisConnection<String, String> connection = redisClient.connect()) {
+            System.out.println("\nConnected to Redis\n");
+        }
+        return redisClient;
+    }
+
+    private void shutdown() {
+        if (nonNull(sessionFactory)) {
+            sessionFactory.close();
+        }
+        if (nonNull(redisClient)) {
+            redisClient.shutdown();
+        }
+    }
+
 
 
 }
